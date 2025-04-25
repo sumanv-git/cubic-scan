@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ProductResponse {
-    private String ItemId;
     private String depotId;
-    private String description;
+    private String barcode;
+    private String message;
+    private List<ItemDetail> products;
 }
