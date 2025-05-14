@@ -2,6 +2,7 @@ package com.lotus.wms.controller;
 
 import com.lotus.wms.modal.ItemDetail;
 import com.lotus.wms.modal.ItemDimensionRequest;
+import com.lotus.wms.modal.ItemDimensionUpdateResponse;
 import com.lotus.wms.modal.ProductResponse;
 import com.lotus.wms.service.CubicScanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class CubicScanController {
     }
 
     @PostMapping("/saveItemDimensions")
-    public ResponseEntity<String>  insertItemDimensions(@RequestBody ItemDimensionRequest request) {
+    public ResponseEntity<ItemDimensionUpdateResponse>  insertItemDimensions(@RequestBody ItemDimensionRequest request) {
         try {
             String status = cubicScanService.insertItemDimensions(
                     request.getDepotId(),
@@ -60,18 +61,18 @@ public class CubicScanController {
             );
 
             if ("SUCCESS".equalsIgnoreCase(status)) {
-                return ResponseEntity.ok("Item dimensions inserted successfully.");
+                return ResponseEntity.ok(new ItemDimensionUpdateResponse(200,"Item dimensions inserted successfully."));
             } else {
                 return ResponseEntity
                         .badRequest()
-                        .body("Failed to insert item dimensions. Reason: " + status);
+                        .body(new ItemDimensionUpdateResponse(400,"Failed to insert item dimensions. Reason: " + status));
             }
 
         } catch (Exception e) {
             // Log the error here if needed
             return ResponseEntity
                     .status(500)
-                    .body("Internal server error: " + e.getMessage());
+                    .body(new ItemDimensionUpdateResponse(500,"Internal server error: " + e.getMessage()));
         }
     }
 
